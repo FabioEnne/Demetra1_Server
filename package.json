@@ -1,12 +1,25 @@
 {
   "name": "demetraserver",
   "version": "0.0.1",
-  "description": "Smart watering system",
-  "repository" : "https://github.com/FabioEnne/Demetra1_Server.git",
+  "description": "Server side app for Demetra Smart Irrigation System",
   "main": "Server.js",
+  "dependencies": {
+    "johnny-five": "^0.10.12",
+    "serialport": "^4.0.7",
+    "socketio": "^1.0.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Fabio Nardini",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabioEnne/Demetra1_Server.git"
+  },
+  "author": "FabioEnne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FabioEnne/Demetra1_Server/issues"
+  },
+  "homepage": "https://github.com/FabioEnne/Demetra1_Server#readme"
 }

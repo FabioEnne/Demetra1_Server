@@ -14,7 +14,7 @@ var tempoInnafiatura = 0;
 board.on("ready", function() { 
 	photo = new five.Sensor({
 		pin: "A1",
-		freq: 5000
+		freq: 500
 	}); 
 	led1 = new five.Led(13);
 	pinRelay = new five.Pin(7);
@@ -28,7 +28,7 @@ board.on("ready", function() {
 		});
 		
 		connection.on('sValue', function(value){
-			console.log('sValue', value );
+			//console.log('sValue', value );
 			socket.emit('sValue', value);
 		});
 		connection.on('slampa', function(value){
@@ -40,7 +40,7 @@ board.on("ready", function() {
 			led1.stop();
 		});
 		photo.on("data", function(){
-			console.log(this.scaleTo(100, 0));
+			//console.log(this.scaleTo(100, 0));
 			var photoValue = this.scaleTo(100, 0);
 			socket.emit('photo', photoValue);
 		});
