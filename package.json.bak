@@ -1,0 +1,12 @@
+{
+  "name": "demetraserver",
+  "version": "0.0.1",
+  "description": "Smart watering system",
+  "repository" : "https://github.com/FabioEnne/Demetra1_Server.git",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Nardini",
+  "license": "ISC"
+}

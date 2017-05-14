@@ -4,14 +4,23 @@ server = http.createServer(),
 socket = socket.listen(server);
 var five = require("johnny-five");  
 var SerialPort = require("serialport");
-var msgProva = 70;
 var board = new five.Board();
 var photo; 
 var led1;
 var pinRelay; 
-var tempoInnafiatura = 0;
-
+//var tempoInnafiatura = 0;
+var jsonfile = require('jsonfile');
+var jsonUpd = require('json-update');
+var file = 'settings.json';
+var wateringTime;
+var udpSettting;										//Objet writed to "settings.json"
+ 
 board.on("ready", function() { 
+	
+	jsonfile.readFile(file, function(err, obj) {
+	  wateringTime = parseInt(obj.lastWateringTime);
+	});
+	
 	photo = new five.Sensor({
 		pin: "A1",
 		freq: 500
@@ -21,37 +30,33 @@ board.on("ready", function() {
 
 	socket.on('connection', function(connection) {
 		console.log('User Connected');
-		socket.emit('prova', msgProva);
+		socket.emit('wateringTime',wateringTime);		//Emits the last watering duration time for client
 
-		connection.on('message', function(msg){
-			socket.emit('message', msg);
-		});
-		
 		connection.on('sValue', function(value){
-			//console.log('sValue', value );
+			console.log('sValue', value );
 			socket.emit('sValue', value);
 		});
-		connection.on('slampa', function(value){
-			console.log('slampando');
-			led1.blink(value);
-		});
-		connection.on('stopslampa', function(){
-			console.log('stop slampando');
-			led1.stop();
-		});
-		photo.on("data", function(){
-			//console.log(this.scaleTo(100, 0));
+
+		photo.on("data", function(){					//LDR Sensor reading
+			//console.log(this.scaleTo(100, 0));		//Decomment this for debugging purpose
 			var photoValue = this.scaleTo(100, 0);
 			socket.emit('photo', photoValue);
 		});
-		connection.on('innafia', function(value){
-			console.log('Sto innafiando ',value);
-			tempoInnafiatura =value*1000;
-			console.log(tempoInnafiatura);
-			pinRelay.high();
+		
+		connection.on('innafia', function(value){		//Pump management 
+
+			//console.log('Sto innafiando ',value);		//Decomment this for debugging purpose
+			tempoInnafiatura =value*1000
+			wateringTime = tempoInnafiatura;
+			jsonUpd.update('settings.json',{lastWateringTime: tempoInnafiatura})
+			.then(function(dat) { 
+			  console.log(dat) 
+			  });
+			console.log("Tempo innfafiatura: ",tempoInnafiatura);			//Decomment this for debugging purpose
+			//pinRelay.high();
 			setTimeout(function(){
-				pinRelay.low();
-				console.log('Finito di innafiare');
+				//pinRelay.low();
+				console.log('Finito di innafiare');	//Decomment this for debugging purpose
 			}, tempoInnafiatura);
 		});
 	});

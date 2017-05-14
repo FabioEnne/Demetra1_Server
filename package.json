@@ -5,6 +5,8 @@
   "main": "Server.js",
   "dependencies": {
     "johnny-five": "^0.10.12",
+    "json-update": "^3.0.0",
+    "jsonfile": "^3.0.0",
     "serialport": "^4.0.7",
     "socketio": "^1.0.0"
   },
